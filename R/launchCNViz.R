@@ -6,6 +6,11 @@
 #' the more informative the application will be. See the CNViz vignette for more information.
 #' Use the hg38 reference genome. CNViz only displays a single sample's data.
 #'
+#' The virtual karyotype PDF export requires the optional packages
+#' \code{karyoploteR} and \code{CopyNumberPlots}. Install them with
+#' \code{BiocManager::install(c("karyoploteR", "CopyNumberPlots"))}.
+#' If these packages are not installed, the karyotype button will not appear.
+#'
 #' @param sample_name A string with the ID/name of your sample.
 #' @param probe_data A dataframe or GRanges object containing probe-level data. If a dataframe, column names must include chr, gene, start, end, log2. chr/seqnames column should be formatted as 'chr1' through 'chrX', 'chrY'. start, end and log2 should be numeric. If a GRanges object, gene and log2 are metadata columns. Optional column/metadata: weight, where weight is numeric.
 #' @param gene_data A dataframe or GRanges object containing gene-level data - one row per gene. If a dataframe, column names must include chr, gene, start, end, log2. chr/seqnames column should be formatted as 'chr1' through 'chrX', 'chrY'. start, end and log2 should be numeric. If a GRanges object, gene and log2 are metadata columns. Optional columns/metadata: weight, loh; where weight is numeric and loh values are TRUE or FALSE.
@@ -21,8 +26,6 @@
 #' @importFrom dplyr select filter summarise mutate left_join group_by n between
 #' @rawNamespace import(stats, except = filter)
 #' @importFrom plotly plot_ly add_segments add_trace layout renderPlotly plotlyOutput event_data subplot
-#' @importFrom karyoploteR plotKaryotype
-#' @importFrom CopyNumberPlots plotCopyNumberCalls
 #' @importFrom GenomicRanges makeGRangesFromDataFrame seqnames width strand
 #' @importFrom magrittr %>%
 #' @importFrom DT DTOutput renderDT formatPercentage datatable formatStyle
@@ -523,8 +526,10 @@ launchCNViz <- function(sample_name = "sample", probe_data = data.frame(), gene_
         formatPercentage(c("Gain", "Amplification", "ShallowDeletion", "DeepDeletion"), 2)
     })
 
-    # karyotype diagram
-    if(nrow(segment_data)>0){
+    # karyotype diagram — only available when optional packages are installed
+    if(nrow(segment_data)>0 &&
+       requireNamespace("karyoploteR", quietly = TRUE) &&
+       requireNamespace("CopyNumberPlots", quietly = TRUE)){
       if("loh" %in% colnames(segment_data)){
         output$karyotype <- downloadHandler(
           filename = paste0(sample_name, "_karyotype.pdf"),

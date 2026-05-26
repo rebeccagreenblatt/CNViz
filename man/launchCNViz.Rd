@@ -35,6 +35,11 @@ At least one of probe_data, gene_data, or segment_data must be supplied;
 sample_name, variant_data and meta_data are all optional. The more inputs supplied,
 the more informative the application will be. See the CNViz vignette for more information.
 Use the hg38 reference genome. CNViz only displays a single sample's data.
+
+The virtual karyotype PDF export requires the optional packages
+\code{karyoploteR} and \code{CopyNumberPlots}. Install them with
+\code{BiocManager::install(c("karyoploteR", "CopyNumberPlots"))}.
+If these packages are not installed, the karyotype button will not appear.
 }
 \examples{
 probes <- data.frame(chr = c("chr1", "chr1", "chr4", "chr4", "chrX"),

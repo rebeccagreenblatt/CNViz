@@ -7,24 +7,24 @@ Description: CNViz takes probe, gene, and segment-level log2 copy number ratios 
 Depends:
     R (>= 4.0),
     shiny (>= 1.5.0)
-Imports: 
+Imports:
     dplyr,
     stats,
     utils,
     grDevices,
     plotly,
-    karyoploteR,
-    CopyNumberPlots,
     GenomicRanges,
     magrittr,
     DT,
     scales,
     graphics
-License: Artistic-2.0 
+License: Artistic-2.0
 Encoding: UTF-8
 biocViews: Visualization, CopyNumberVariation, Sequencing, DNASeq
-RoxygenNote: 7.1.1
-Suggests: 
+RoxygenNote: 7.3.2
+Suggests:
     rmarkdown,
-    knitr
+    knitr,
+    karyoploteR,
+    CopyNumberPlots
 VignetteBuilder: knitr
